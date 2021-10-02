@@ -15,10 +15,19 @@ router.route('/createNewUser').post((req, res) => {
         return
     }
     const name = req.body.name
-    const newUser = new User({name, pastOrders: [], subscriptions: [], businessList: [], allReceipts:[]})
-    newUser.save()
-        .then(() => res.json({success:true, message: "New User Created!"}))
-        .catch(err => res.json(err))
+    User.find({name})
+        .then(data => {
+            if (data.length == 0) {
+                const newUser = new User({name, pastOrders: [], subscriptions: [], businessList: [], allReceipts:[]})
+                newUser.save()
+                    .then(() => res.json({success:true, message: "New User Created!"}))
+                    .catch(err => res.json(err))
+            } else {
+                ret.json({success: false, message: "Account with name already exists"})
+            }
+        })
+        .catch(err => ret.json(err))
+    
 })
 
 router.route('/createNewBusiness').post((req, res) => {
