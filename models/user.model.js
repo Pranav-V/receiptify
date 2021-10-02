@@ -4,7 +4,8 @@ const Schema = mongoose.Schema
 const userSchema = new Schema({
     name: {type: String, required: true}, 
     subscriptions: {type: Object, required: true},
-    businessList: {type: Object, required: true}
+    businessList: {type: Object, required: true},
+    allReceipts: {type: Object, required: true}
 },
 {
     timestamps: true

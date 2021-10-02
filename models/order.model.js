@@ -9,7 +9,8 @@ const orderSchema = new Schema({
     businessPhone: {type: String, required: true},
     subtotal: {type: Number, required: true}, 
     total: {type: Number, required: true},
-    orderInfo: {type: Object, required: true}
+    orderInfo: {type: Object, required: true},
+    couponInfo: {type: Object, required: true}
 },
 {
     timestamps: true
