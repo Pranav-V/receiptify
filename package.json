@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "http": "0.0.1-security",
     "mongoose": "^6.0.8",
+    "nodemailer": "^6.6.5",
     "nodemon": "^2.0.13",
     "path": "^0.12.7"
   }

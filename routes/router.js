@@ -5,6 +5,8 @@ const User = require("../models/user.model")
 const Business = require("../models/business.model")
 var Chance = require('chance')
 const chance = new Chance()
+const nodemailer = require("nodemailer");
+
 const SECURITY_CODE = "A3D263103C27E77EF8B6267C051906C0"
 
 
@@ -23,10 +25,10 @@ router.route('/createNewUser').post((req, res) => {
                     .then(() => res.json({success:true, message: "New User Created!"}))
                     .catch(err => res.json(err))
             } else {
-                ret.json({success: false, message: "Account with name already exists"})
+                res.json({success: false, message: "Account with name already exists"})
             }
         })
-        .catch(err => ret.json(err))
+        .catch(err => res.json(err))
     
 })
 
@@ -84,6 +86,8 @@ router.route('/retrieveHash').post((req, res) => {
     }
     const hash = req.body.hashCode
     const name = req.body.name
+    const email = req.body.email
+
     Order.find({hash})
         .then(data => {
             if (data.length == 0) {
@@ -103,6 +107,31 @@ router.route('/retrieveHash').post((req, res) => {
                     }
                     if (!recList.includes(hash)) {
                         us[0].allReceipts = [hash, ...recList]
+                        console.log("here")
+                        if (email != null) {
+                            let mailOptions = {
+                                from: 'receiptify.bot@gmail.com',
+                                to: email,
+                                subject: 'Your Reciept @ Receiptify',
+                                text: "Testing"
+                            };
+
+                            let transporter = nodemailer.createTransport({
+                                service: 'gmail',
+                                auth: {
+                                user: 'receiptify.bot@gmail.com',
+                                pass: '1693644087%3A'
+                                }
+                            });
+
+                            transporter.sendMail(mailOptions, function(error, info){
+                                if (error) {
+                                console.log(error);
+                                } else {
+                                console.log('Email sent: ' + info.response);
+                                }
+                            });
+                        }
                     }
                     us[0].save()
                         .then(() => res.json({success: true, message: "Order Hash Found", data: data[0]}))
