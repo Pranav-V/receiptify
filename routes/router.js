@@ -37,11 +37,20 @@ router.route('/createNewBusiness').post((req, res) => {
         return
     }
     const businessName = req.body.businessName
-    const newBusiness = new Business({businessName, allMessages: []})
-    newBusiness.save()
-        .then(() => res.json({success:true, message: "New Business Created!"}))
-        .catch(err => res.json(err))
+    Business.find({businessName})
+        .then(data => {
+            if (data.length == 0) {
+                const newBusiness = new Business({businessName, allMessages: []})
+                newBusiness.save()
+                    .then(() => res.json({success:true, message: "New Business Created!"}))
+                    .catch(err => res.json(err))
+            } else {
+                ret.json({success: false, message: "Account with name already exists"})
+            }
+        })
+        .catch(err => ret.json(err))
 })
+
 router.route('/createHash').post((req, res) => {
     const securityCode = req.body.securityCode
     if(securityCode != SECURITY_CODE) {
