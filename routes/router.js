@@ -376,6 +376,7 @@ router.route('/retrieveMessages').post((req, res) => {
                         }
                     })
             })
+            res.json({success: false, message: "No Subscriptions"})
         })
         .catch(err => res.json(err))
 })
