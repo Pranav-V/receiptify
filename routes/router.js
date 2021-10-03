@@ -204,8 +204,10 @@ router.route('/addSubscription').post((req, res) => {
                 return
             }
             const currSubscriptions = data[0].subscriptions
-            const newList = [...currSubscriptions, newSubscription]
-            data[0].subscriptions = newList
+            if (!currSubscriptions.includes(newSubscription)) {
+                const newList = [...currSubscriptions, newSubscription]
+                data[0].subscriptions = newList
+            }
             data[0].save()
                 .then(res.json({success: true, message: "Subscription Added"}))
                 .catch(err => res.json(err))
