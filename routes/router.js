@@ -214,6 +214,33 @@ router.route('/addSubscription').post((req, res) => {
         })
 })
 
+router.route('/isSubscribed').post((req, res) => {
+    const securityCode = req.body.securityCode
+    if(securityCode != SECURITY_CODE) {
+        res.json({success: false, message: "Invalid Credentials"})
+        return
+    }
+
+    const name = req.body.name
+    const businessName = req.body.businessName
+
+    User.find({name})
+    .then(data => {
+        if(data.length == 0) {
+            res.json({success: false, message: "User Not Found"})
+            return
+        }
+        data[0].subscriptions.forEach(elem => {
+            if (elem == businessName) {
+                res.json({success: true, message: "Subscription Found", found: true})
+                return
+            }
+        })
+        res.json({success: false, message: "Subscription Not Found", found: false})
+    })
+    .catch(err => res.json(err))
+})
+
 router.route('/getSubscriptions').post((req, res) => {
     const securityCode = req.body.securityCode
     if(securityCode != SECURITY_CODE) {
