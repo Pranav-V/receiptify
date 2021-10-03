@@ -66,8 +66,8 @@ router.route('/createHash').post((req, res) => {
     const businessPhone = req.body.businessPhone
     const subtotal = req.body.subtotal
     const total = req.body.total
-    const orderInfo = req.body.order
-    const couponInfo = req.body.coupons
+    const orderInfo = req.body.orderInfo
+    const couponInfo = req.body.couponInfo
 
     const newOrder = new Order({hash, dateIssued, businessName, businessAddress, 
             businessPhone, subtotal, total, orderInfo, couponInfo})
