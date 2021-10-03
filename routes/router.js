@@ -364,19 +364,25 @@ router.route('/retrieveMessages').post((req, res) => {
             }
             const currSubscriptions = data[0].subscriptions
             currSubscriptions.forEach((sub, i) => {
+                var checked = false
                 Business.find({businessName: sub})
                     .then(foundB => {
-                        console.log(foundB)
                         if (foundB.length != 0) {
                             newMessages = [...newMessages, ...foundB[0].allMessages]
                         }
                         if (i == currSubscriptions.length - 1) {
                             newMessages.sort((message1, message2) => new Date(message2.date) - new Date(message1.date))
                             res.json({success: true, message: "Messages Aggregated", messageData: newMessages})
+                            return 0;
                         }
+                        checked = true
                     })
+                    .catch(err => res.json(err))
+                if (newMessages.length == 0 && i == currSubscriptions.length - 1 && checked) {
+                    console.log('here')
+                    res.json({success: false, message: "No Subscriptions", messageData: newMessages})
+                }
             })
-            res.json({success: false, message: "No Subscriptions", messageData: newMessages})
         })
         .catch(err => res.json(err))
 })
