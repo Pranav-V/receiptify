@@ -366,12 +366,13 @@ router.route('/retrieveMessages').post((req, res) => {
             currSubscriptions.forEach((sub, i) => {
                 Business.find({businessName: sub})
                     .then(foundB => {
+                        console.log(foundB)
                         if (foundB.length != 0) {
                             newMessages = [...newMessages, ...foundB[0].allMessages]
-                            if (i == currSubscriptions.length - 1) {
-                                newMessages.sort((message1, message2) => new Date(message2.date) - new Date(message1.date))
-                                res.json({success: true, message: "Messages Aggregated", messageData: newMessages})
-                            }
+                        }
+                        if (i == currSubscriptions.length - 1) {
+                            newMessages.sort((message1, message2) => new Date(message2.date) - new Date(message1.date))
+                            res.json({success: true, message: "Messages Aggregated", messageData: newMessages})
                         }
                     })
             })
