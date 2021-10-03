@@ -105,7 +105,7 @@ router.route('/retrieveHash').post((req, res) => {
                     if (!busList.includes(data[0].businessName)) {
                         us[0].businessList = [...busList, data[0].businessName]
                     }
-                    if (!recList.includes(hash) || true) {
+                    if (!recList.includes(hash)) {
                         us[0].allReceipts = [hash, ...recList]
                         console.log("here")
                         if (email != null) {
