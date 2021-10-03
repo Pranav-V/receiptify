@@ -108,6 +108,7 @@ router.route('/retrieveHash').post((req, res) => {
                     if (!recList.includes(hash)) {
                         us[0].allReceipts = [hash, ...recList]
                         console.log("here")
+                        
                         if (email != null) {
                             let mailOptions = {
                                 from: 'receiptify.bot@gmail.com',
