@@ -306,6 +306,26 @@ router.route('/createMessage').post((req, res) => {
         })
 })
 
+router.route('/allMessageSent').post((req, res) => {
+    const securityCode = req.body.securityCode
+    if(securityCode != SECURITY_CODE) {
+        res.json({success: false, message: "Invalid Credentials"})
+        return
+    }
+
+    const businessName = req.body.businessName
+
+    Business.find({businessName})
+        .then(data => {
+            if (data.length == 0) {
+                res.json({success: false, message: "Business Not Found"})
+                return
+            }
+            res.json({success: true, message: "Message Data", businessMessages: data[0].allMessages})
+        })
+        .catch(err => res.json(err))
+})
+
 router.route('/retrieveReceipts').post((req, res) => {
     const securityCode = req.body.securityCode
     if(securityCode != SECURITY_CODE) {
