@@ -105,15 +105,36 @@ router.route('/retrieveHash').post((req, res) => {
                     if (!busList.includes(data[0].businessName)) {
                         us[0].businessList = [...busList, data[0].businessName]
                     }
-                    if (!recList.includes(hash)) {
+                    if (!recList.includes(hash) || true) {
                         us[0].allReceipts = [hash, ...recList]
                         console.log("here")
                         if (email != null) {
+                            var recieptText = "Business: " + data[0].businessName + "\n\n"
+                            recieptText += "| Quantity | Description | Price |\n"
+                            recieptText += "----------------------------------------------------"
+                            
+                            data[0].orderInfo.forEach(elem => {
+                                var fixed = formatStr(elem)
+                                console.log(fixed)
+                                recieptText += "\n" + fixed[0] + fixed[1] + fixed[2]
+                            })
+
+                            recieptText += "\n----------------------------------------------------\n"
+
+                            let dollarUSLocale = Intl.NumberFormat("en-US", {
+                                style: "currency",
+                                currency: "USD",
+                            });
+
+                            recieptText += "\nSubtotal: " + dollarUSLocale.format(data[0].subtotal);
+                            recieptText += "\nTax:      " + dollarUSLocale.format(data[0].total - data[0].subtotal)
+                            recieptText += "\nTotal:    " + dollarUSLocale.format(data[0].total)
+
                             let mailOptions = {
                                 from: 'receiptify.bot@gmail.com',
                                 to: email,
                                 subject: 'Your Reciept @ Receiptify',
-                                text: "Testing"
+                                text: recieptText
                             };
 
                             let transporter = nodemailer.createTransport({
@@ -309,6 +330,39 @@ router.route('/retrieveMessages').post((req, res) => {
         .catch(err => res.json(err))
 })
 
+
+function formatStr(element) {
+
+    var quantity = element.quantity + ""
+    var desc = element.name
+    var price = element.price + ""
+
+
+    if (quantity.length > 10) {
+        quantity = quantity.substring(0, 7) + "..."
+    } else {
+        quantity = quantity.padEnd(10)
+    }
+
+    desc = " " + desc
+
+    if (desc.length > 18) {
+        desc = desc.substring(0, 18) + "..."
+    } else {
+        desc = desc.padEnd(21)
+    }
+
+    price = " $" + price 
+    if (price.length > 9) {
+        price = price.substring(0, 6) + "..."
+    } else {
+        price = price.padEnd(9)
+    }
+    console.log(price)
+
+    return [quantity, desc, price]
+}
+    
 
 router.route('/')
 module.exports = router
