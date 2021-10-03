@@ -321,7 +321,7 @@ router.route('/allMessageSent').post((req, res) => {
                 res.json({success: false, message: "Business Not Found"})
                 return
             }
-            res.json({success: true, message: "Message Data", businessMessages: data[0].allMessages})
+            res.json({success: true, message: "Message Data", messageData: data[0].allMessages})
         })
         .catch(err => res.json(err))
 })
