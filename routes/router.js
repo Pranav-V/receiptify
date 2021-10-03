@@ -5,7 +5,7 @@ const User = require("../models/user.model")
 const Business = require("../models/business.model")
 var Chance = require('chance')
 const chance = new Chance()
-const nodemailer = require("nodemailer");
+//const nodemailer = require("nodemailer");
 
 const SECURITY_CODE = "A3D263103C27E77EF8B6267C051906C0"
 
@@ -108,7 +108,7 @@ router.route('/retrieveHash').post((req, res) => {
                     if (!recList.includes(hash)) {
                         us[0].allReceipts = [hash, ...recList]
                         console.log("here")
-                        
+                        /*
                         if (email != null) {
                             let mailOptions = {
                                 from: 'receiptify.bot@gmail.com',
@@ -132,7 +132,7 @@ router.route('/retrieveHash').post((req, res) => {
                                 console.log('Email sent: ' + info.response);
                                 }
                             });
-                        }
+                        }*/
                     }
                     us[0].save()
                         .then(() => res.json({success: true, message: "Order Hash Found", data: data[0]}))
