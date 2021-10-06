@@ -1,0 +1,38 @@
+name: receiptify
+description: Digitize your receipts and promote small businesses
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.11.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  qr_code_scanner: ^0.5.2
+  qr_flutter: ^4.0.0
+  http: ^0.13.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/icons/
+
+  fonts:
+    - family: Arrow
+      fonts:
+        - asset: assets/fonts/arrow.ttf
+    - family: Avenir
+      fonts:
+        - asset: assets/fonts/avenir_black.otf
